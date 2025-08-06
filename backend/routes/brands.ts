@@ -5,6 +5,7 @@ import { eq, desc } from 'drizzle-orm'
 
 const brands = new Hono()
 
+// Get all brands
 brands.get('/', async (c: Context) => {
   try {
     const brandsData = await db.select().from(Brands)
@@ -14,6 +15,7 @@ brands.get('/', async (c: Context) => {
   }
 })
 
+// Get latest menu for a brand
 brands.get('/:brandId/menu/latest', async (c: Context) => {
   try {
     const brandId = parseInt(c.req.param('brandId'))
