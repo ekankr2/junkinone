@@ -1,12 +1,9 @@
-import { Hono, Context } from 'hono'
-import { db } from '@/lib/database.ts'
-import { Brands, Menus, MenuItems } from '@/models/index.ts'
-import { eq, sql } from 'drizzle-orm'
+import { NextResponse } from 'next/server';
+import { db } from '@/lib/database';
+import { Brands, Menus, MenuItems } from '@/lib/models';
+import { eq, sql } from 'drizzle-orm';
 
-const menus = new Hono()
-
-// Get latest menus for all brands
-menus.get('/', async (c: Context) => {
+export async function GET() {
   try {
     const latestMenus = await db
       .select({
@@ -30,12 +27,10 @@ menus.get('/', async (c: Context) => {
           FROM menus 
           ORDER BY brand_id, date DESC
         )`
-      )
+      );
     
-    return c.json(latestMenus)
-  } catch (_error) {
-    return c.json({ error: 'Failed to fetch latest menus' }, 500)
+    return NextResponse.json(latestMenus);
+  } catch (error) {
+    return NextResponse.json({ error: 'Failed to fetch latest menus' }, { status: 500 });
   }
-})
-
-export default menus
+}

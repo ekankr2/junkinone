@@ -1,5 +1,5 @@
 import { pgTable, serial, timestamp, integer, text, decimal } from "drizzle-orm/pg-core";
-import { Brands } from "@/models/brand.ts";
+import { Brands } from "./brand";
 
 export const Menus = pgTable("menus", {
   id: serial("id").primaryKey(),
