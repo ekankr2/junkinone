@@ -5,10 +5,11 @@ import { eq, desc } from 'drizzle-orm';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { brandId: string } }
+  { params }: { params: Promise<{ brandId: string }> }
 ) {
   try {
-    const brandId = parseInt(params.brandId);
+    const { brandId: brandIdParam } = await params;
+    const brandId = parseInt(brandIdParam);
     
     const latestMenu = await db
       .select()
