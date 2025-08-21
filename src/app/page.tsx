@@ -1,54 +1,28 @@
-import { MenuList } from '@/components/MenuList';
-import { BrandList } from '@/components/BrandList';
-import { db } from '@/lib/database';
-import { Brands, Menus, MenuItems } from '@/lib/models';
-import { eq, sql } from 'drizzle-orm';
-
-async function getBrands() {
-  try {
-    return await db.select().from(Brands);
-  } catch (error) {
-    console.warn('Database not available during build:', error);
-    return [];
-  }
-}
-
-async function getMenus() {
-  try {
-    return await db
-      .select({
-        menuId: Menus.id,
-        brandId: Brands.id,
-        brandName: Brands.name,
-        brandWebsite: Brands.website,
-        menuDate: Menus.date,
-        itemName: MenuItems.name,
-        price: MenuItems.price,
-        category: MenuItems.category,
-        description: MenuItems.description,
-        available: MenuItems.available
-      })
-      .from(Menus)
-      .innerJoin(Brands, eq(Menus.brand_id, Brands.id))
-      .leftJoin(MenuItems, eq(MenuItems.menu_id, Menus.id))
-      .where(
-        sql`${Menus.id} IN (
-          SELECT DISTINCT ON (brand_id) id 
-          FROM menus 
-          ORDER BY brand_id, date DESC
-        )`
-      );
-  } catch (error) {
-    console.warn('Database not available during build:', error);
-    return [];
-  }
-}
+import {MenuList} from '@/components/MenuList';
+import {BrandList} from '@/components/BrandList';
+import tryCatch from "@/utils/tryCatch";
+import {mainApiFetch} from "@/utils/fetch";
 
 export default async function Home() {
-  const [brands, menus] = await Promise.all([
-    getBrands(),
-    getMenus()
-  ]);
+    const { data: brandsData, error: brandsError } = await tryCatch(
+        mainApiFetch(`/api/brands`)
+    );
+
+    const { data: menusData, error: menusError } = await tryCatch(
+        mainApiFetch(`/api/menus`)
+    );
+
+    if(brandsError || menusError) {
+        return (
+            <div className="min-h-screen bg-gray-50 p-4 flex items-center justify-center">
+                <div className="text-center">
+                    <h1 className="text-2xl font-bold text-gray-900 mb-4">🍗 Chicken Menu Hub</h1>
+                    <p className="text-red-600">Failed to load data. Please try again later.</p>
+                </div>
+            </div>
+        );
+    }
+
 
   return (
     <div className="min-h-screen bg-gray-50 p-4">
@@ -60,11 +34,11 @@ export default async function Home() {
         
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           <aside className="lg:col-span-1">
-            <BrandList brands={brands} />
+            <BrandList brands={brandsData || []} />
           </aside>
           
           <main className="lg:col-span-3">
-            <MenuList menus={menus} />
+            <MenuList menus={menusData || []} />
           </main>
         </div>
       </div>

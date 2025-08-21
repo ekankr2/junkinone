@@ -1,2 +1,2 @@
-export * from './brand';
-export * from './menu';
+export { Brands } from './brand';
+export { Menus, MenuItems } from './menu';
