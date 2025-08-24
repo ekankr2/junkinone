@@ -1,7 +1,7 @@
-import { NextResponse } from 'next/server';
-import { db } from '@/lib/database';
-import { Brands, Menus, MenuItems } from '@/lib/models';
-import { eq } from 'drizzle-orm';
+import {NextResponse} from 'next/server';
+import {Brands} from '@/db/models';
+import {eq} from 'drizzle-orm';
+import db from "@/db";
 
 export async function POST() {
   try {

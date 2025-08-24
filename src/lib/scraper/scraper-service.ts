@@ -1,7 +1,6 @@
-import { db } from '../database';
-import { Brands, Menus, MenuItems } from '../models';
+import { Brands, Menus, MenuItems } from '../../db/models';
 import { BHCScraper } from './brands/bhc-scraper';
-import { eq } from 'drizzle-orm';
+import db from "@/db";
 
 export class ScraperService {
   private scrapers: Map<string, any> = new Map();

@@ -1,4 +1,4 @@
-import { BaseScraper, ScrapeConfig } from '../base-scraper';
+import {BaseScraper, ScrapeConfig} from "@/lib/scraper/base-scraper";
 
 export class BHCScraper extends BaseScraper {
   constructor() {

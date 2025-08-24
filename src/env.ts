@@ -5,7 +5,7 @@ const env = {
             ? 'https://junkinone.com'
             : 'http://localhost:3000',
     CDN_URL: 'https://cdn.junkinone.com',
-    DB_URL: 'https://junkinone.com',
+    DATABASE_URL: process.env.DATABASE_URL,
 };
 
 export default env;

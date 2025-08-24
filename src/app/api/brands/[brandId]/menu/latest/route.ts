@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { db } from '@/lib/database';
-import { Brands, Menus, MenuItems } from '@/lib/models';
-import { eq, desc } from 'drizzle-orm';
+import {NextRequest, NextResponse} from 'next/server';
+import {MenuItems, Menus} from '@/db/models';
+import {desc, eq} from 'drizzle-orm';
+import db from "@/db";
 
 export async function GET(
   request: NextRequest,

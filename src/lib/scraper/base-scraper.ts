@@ -1,5 +1,5 @@
 import * as cheerio from 'cheerio';
-import puppeteer from 'puppeteer';
+import puppeteer from 'puppeteer'
 
 export interface ScrapedMenuItem {
   name: string;
