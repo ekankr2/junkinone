@@ -1,4 +1,4 @@
-import { Brands, Menus, MenuItems } from '../../db/models';
+import { Brands, Menus, MenuItems } from '@/db/models';
 import { BHCScraper } from './brands/bhc-scraper';
 import db from "@/db";
 
@@ -58,13 +58,12 @@ export class ScraperService {
     console.log(`Successfully scraped ${menuItems.length} items for ${brandKey}`);
   }
 
-  async addBrand(name: string, website: string, scraperKey: string): Promise<number> {
+  async addBrand(name: string, website: string): Promise<number> {
     const [brand] = await db
       .insert(Brands)
       .values({
         name,
-        website,
-        scraping_config: JSON.stringify({ scraperKey })
+        website
       })
       .returning();
 
