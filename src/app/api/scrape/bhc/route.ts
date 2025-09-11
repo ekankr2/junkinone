@@ -80,13 +80,11 @@ export async function POST() {
     }
 
     // Items have changed, create new menu
-    const newMenu = new Menu({
+    const newMenu = await Menu.create({
       brandId: brand._id,
       date: new Date(),
       items: normalizedScrapedItems
     });
-
-    await newMenu.save();
 
     return NextResponse.json({
       message: `Successfully scraped ${scrapedItems.length} BHC menu items (items changed)`,

@@ -45,25 +45,18 @@ export class ScraperService {
       category: item.category || undefined,
     }));
 
-    const menu = new Menu({
+    const menu = await Menu.create({
       brandId: new Types.ObjectId(brandId),
       date: new Date(),
       items: normalizedItems
     });
-
-    await menu.save();
     
     console.log(`Successfully scraped ${menuItems.length} items for ${brandKey}`);
   }
 
   async addBrand(name: string, website: string): Promise<string> {
     await connectDB();
-    const brand = new Brand({
-      name,
-      website
-    });
-
-    await brand.save();
+    const brand = await Brand.create({ name, website });
     return brand._id.toString();
   }
 }
