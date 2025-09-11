@@ -1,36 +1,30 @@
-import {NextRequest, NextResponse} from 'next/server';
-import {MenuItems, Menus} from '@/db/models';
-import {desc, eq} from 'drizzle-orm';
-import db from "@/db";
+import { NextRequest, NextResponse } from 'next/server';
+import { Menu } from '@/db/models';
+import connectDB from '@/db';
+import { Types } from 'mongoose';
 
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ brandId: string }> }
 ) {
   try {
+    await connectDB();
     const { brandId: brandIdParam } = await params;
-    const brandId = parseInt(brandIdParam);
     
-    const latestMenu = await db
-      .select()
-      .from(Menus)
-      .where(eq(Menus.brand_id, brandId))
-      .orderBy(desc(Menus.date))
-      .limit(1);
+    if (!Types.ObjectId.isValid(brandIdParam)) {
+      return NextResponse.json({ error: 'Invalid brand ID' }, { status: 400 });
+    }
     
-    if (latestMenu.length === 0) {
+    const latestMenu = await Menu
+      .findOne({ brandId: new Types.ObjectId(brandIdParam) })
+      .sort({ date: -1 })
+      .populate('brandId', 'name website');
+    
+    if (!latestMenu) {
       return NextResponse.json({ error: 'No menu found for this brand' }, { status: 404 });
     }
-
-    const menuItems = await db
-      .select()
-      .from(MenuItems)
-      .where(eq(MenuItems.menu_id, latestMenu[0].id));
     
-    return NextResponse.json({
-      menu: latestMenu[0],
-      items: menuItems
-    });
+    return NextResponse.json(latestMenu);
   } catch (error) {
     return NextResponse.json({ error: 'Failed to fetch menu' }, { status: 500 });
   }

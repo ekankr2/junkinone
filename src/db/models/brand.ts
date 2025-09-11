@@ -1,8 +1,25 @@
-import { pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
+import { Schema, model, models, Document } from 'mongoose';
 
-export const Brands = pgTable("brands", {
-  id: serial("id").primaryKey(),
-  name: text("name").notNull(),
-  website: text("website").notNull(),
-  created_at: timestamp("created_at").defaultNow(),
+export interface IBrand extends Document {
+  name: string;
+  website: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+const brandSchema = new Schema<IBrand>({
+  name: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  website: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+}, {
+  timestamps: true,
 });
+
+export const Brand = models.Brand || model<IBrand>('Brand', brandSchema);

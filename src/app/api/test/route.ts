@@ -1,14 +1,15 @@
 import { NextResponse } from 'next/server';
-import { Brands } from '@/db/models';
-import db from '@/db';
+import { Brand } from '@/db/models';
+import connectDB from '@/db';
 
 export async function GET() {
   try {
-    const latestMenus = await db.select().from(Brands);
+    await connectDB();
+    const brands = await Brand.find({});
 
-    return NextResponse.json(latestMenus);
+    return NextResponse.json(brands);
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ error: 'Failed to fetch latest menus' }, { status: 500 });
+    return NextResponse.json({ error: 'Failed to fetch brands' }, { status: 500 });
   }
 }

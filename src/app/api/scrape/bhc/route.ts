@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server';
 import { BHCScraper } from '@/lib/scraper/brands/bhc-scraper';
-import { eq, sql } from 'drizzle-orm';
-import db from '@/db';
-import { Brands, MenuItems, Menus } from '@/db/models';
+import { Brand, Menu } from '@/db/models';
+import connectDB from '@/db';
+import { Types } from 'mongoose';
 
 interface ScrapedItem {
   name: string;
@@ -15,9 +15,9 @@ interface ScrapedItem {
 function normalizeItem(item: ScrapedItem) {
   return {
     name: item.name.trim(),
-    price: item.price?.trim() || null,
-    description: item.description?.trim() || null,
-    category: item.category?.trim() || null
+    price: item.price ? parseFloat(item.price.replace(/[^0-9.]/g, '')) || undefined : undefined,
+    description: item.description?.trim() || undefined,
+    category: item.category?.trim() || undefined
   };
 }
 
@@ -32,13 +32,14 @@ function itemsAreEqual(scraped: ReturnType<typeof normalizeItem>, existing: any)
 
 export async function POST() {
   try {
+    await connectDB();
+    
     // Find BHC brand in database
-    const brands = await db.select().from(Brands).where(eq(Brands.name, 'BHC'));
-    if (brands.length === 0) {
+    const brand = await Brand.findOne({ name: 'BHC' });
+    if (!brand) {
       return NextResponse.json({ error: 'BHC brand not found in database' }, { status: 404 });
     }
 
-    const brand = brands[0];
     const scraper = new BHCScraper();
     const scrapedItems = await scraper.scrape();
 
@@ -47,76 +48,52 @@ export async function POST() {
     }
 
     // Get the latest menu for this brand
-    const latestMenus = await db
-      .select()
-      .from(Menus)
-      .where(eq(Menus.brand_id, brand.id))
-      .orderBy(sql`${Menus.date} DESC`)
-      .limit(1);
-
-    let currentMenu = latestMenus[0];
-    let existingItems: any[] = [];
-
-    if (currentMenu) {
-      // Get existing menu items
-      existingItems = await db
-        .select()
-        .from(MenuItems)
-        .where(eq(MenuItems.menu_id, currentMenu.id));
-    }
+    const currentMenu = await Menu
+      .findOne({ brandId: brand._id })
+      .sort({ date: -1 });
 
     // Normalize scraped items for comparison
     const normalizedScrapedItems = scrapedItems.map(normalizeItem);
 
     // Check if items have changed
-    const itemsChanged = 
-      normalizedScrapedItems.length !== existingItems.length ||
-      !normalizedScrapedItems.every((scrapedItem, index) => {
-        const existingItem = existingItems.find(item => item.name === scrapedItem.name);
-        return existingItem && itemsAreEqual(scrapedItem, existingItem);
-      });
+    let itemsChanged = true;
+    if (currentMenu && currentMenu.items) {
+      itemsChanged = 
+        normalizedScrapedItems.length !== currentMenu.items.length ||
+        !normalizedScrapedItems.every((scrapedItem: any) => {
+          const existingItem = currentMenu.items.find((item: any) => item.name === scrapedItem.name);
+          return existingItem && itemsAreEqual(scrapedItem, existingItem);
+        });
+    }
 
     if (!itemsChanged && currentMenu) {
       // Items haven't changed, just update the menu date to show it was checked
-      await db
-        .update(Menus)
-        .set({ date: new Date() })
-        .where(eq(Menus.id, currentMenu.id));
+      currentMenu.date = new Date();
+      await currentMenu.save();
 
       return NextResponse.json({
         message: `No changes detected. Updated check time for existing menu`,
-        menuId: currentMenu.id,
-        itemCount: existingItems.length,
+        menuId: currentMenu._id,
+        itemCount: currentMenu.items.length,
         changed: false
       });
     }
 
     // Items have changed, create new menu
-    const [newMenu] = await db
-      .insert(Menus)
-      .values({
-        brand_id: brand.id,
-        date: new Date(),
-      })
-      .returning();
+    const newMenu = new Menu({
+      brandId: brand._id,
+      date: new Date(),
+      items: normalizedScrapedItems
+    });
 
-    // Insert new menu items
-    const menuItemsData = normalizedScrapedItems.map(item => ({
-      menu_id: newMenu.id,
-      name: item.name,
-      price: item.price,
-      description: item.description,
-      category: item.category,
-    }));
-
-    await db.insert(MenuItems).values(menuItemsData);
+    await newMenu.save();
 
     return NextResponse.json({
       message: `Successfully scraped ${scrapedItems.length} BHC menu items (items changed)`,
-      menuId: newMenu.id,
+      menuId: newMenu._id,
       itemCount: scrapedItems.length,
       changed: true,
-      previousMenuId: currentMenu?.id
+      previousMenuId: currentMenu?._id
     });
   } catch (error) {
     console.error('BHC scraping failed:', error);

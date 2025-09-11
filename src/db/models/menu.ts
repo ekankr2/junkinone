@@ -1,18 +1,56 @@
-import { pgTable, serial, timestamp, integer, text, decimal } from "drizzle-orm/pg-core";
-import { Brands } from "./brand";
+import { Schema, model, models, Document, Types } from 'mongoose';
 
-export const Menus = pgTable("menus", {
-  id: serial("id").primaryKey(),
-  brand_id: integer("brand_id").references(() => Brands.id, { onDelete: "cascade" }).notNull(),
-  date: timestamp("date").defaultNow().notNull(),
-  created_at: timestamp("created_at").defaultNow(),
+export interface IMenuItem {
+  name: string;
+  price?: number;
+  description?: string;
+  category?: string;
+}
+
+export interface IMenu extends Document {
+  brandId: Types.ObjectId;
+  date: Date;
+  items: IMenuItem[];
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+const menuItemSchema = new Schema<IMenuItem>({
+  name: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  price: {
+    type: Number,
+    min: 0,
+  },
+  description: {
+    type: String,
+    trim: true,
+  },
+  category: {
+    type: String,
+    trim: true,
+  },
+}, { _id: false });
+
+const menuSchema = new Schema<IMenu>({
+  brandId: {
+    type: Schema.Types.ObjectId,
+    ref: 'Brand',
+    required: true,
+  },
+  date: {
+    type: Date,
+    required: true,
+    default: Date.now,
+  },
+  items: [menuItemSchema],
+}, {
+  timestamps: true,
 });
 
-export const MenuItems = pgTable("menu_items", {
-  id: serial("id").primaryKey(),
-  menu_id: integer("menu_id").references(() => Menus.id, { onDelete: "cascade" }).notNull(),
-  name: text("name").notNull(),
-  price: decimal("price", { precision: 10, scale: 2 }),
-  description: text("description"),
-  category: text("category"),
-});
+menuSchema.index({ brandId: 1, date: -1 });
+
+export const Menu = models.Menu || model<IMenu>('Menu', menuSchema);

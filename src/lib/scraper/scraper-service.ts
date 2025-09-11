@@ -1,6 +1,7 @@
-import { Brands, Menus, MenuItems } from '@/db/models';
+import { Brand, Menu } from '@/db/models';
 import { BHCScraper } from './brands/bhc-scraper';
-import db from "@/db";
+import connectDB from '@/db';
+import { Types } from 'mongoose';
 
 export class ScraperService {
   private scrapers: Map<string, any> = new Map();
@@ -10,18 +11,19 @@ export class ScraperService {
   }
 
   async scrapeAllBrands(): Promise<void> {
-    const brands = await db.select().from(Brands);
+    await connectDB();
+    const brands = await Brand.find({});
     
     for (const brand of brands) {
       try {
-        await this.scrapeBrand(brand.id, brand.name.toLowerCase());
+        await this.scrapeBrand(brand._id.toString(), brand.name.toLowerCase());
       } catch (error) {
         console.error(`Failed to scrape ${brand.name}:`, error);
       }
     }
   }
 
-  async scrapeBrand(brandId: number, brandKey: string): Promise<void> {
+  async scrapeBrand(brandId: string, brandKey: string): Promise<void> {
     const ScraperClass = this.scrapers.get(brandKey);
     if (!ScraperClass) {
       console.warn(`No scraper found for brand: ${brandKey}`);
@@ -36,37 +38,32 @@ export class ScraperService {
       return;
     }
 
-    const [menu] = await db
-      .insert(Menus)
-      .values({
-        brand_id: brandId,
-        date: new Date(),
-      })
-      .returning();
-
-    const menuItemsData = menuItems.map((item: any) => ({
-      menu_id: menu.id,
+    const normalizedItems = menuItems.map((item: any) => ({
       name: item.name,
-      price: item.price,
-      description: item.description,
-      category: item.category,
-      available: item.available ? 1 : 0,
+      price: item.price ? parseFloat(item.price.replace(/[^0-9.]/g, '')) || undefined : undefined,
+      description: item.description || undefined,
+      category: item.category || undefined,
     }));
 
-    await db.insert(MenuItems).values(menuItemsData);
+    const menu = new Menu({
+      brandId: new Types.ObjectId(brandId),
+      date: new Date(),
+      items: normalizedItems
+    });
+
+    await menu.save();
     
     console.log(`Successfully scraped ${menuItems.length} items for ${brandKey}`);
   }
 
-  async addBrand(name: string, website: string): Promise<number> {
-    const [brand] = await db
-      .insert(Brands)
-      .values({
-        name,
-        website
-      })
-      .returning();
+  async addBrand(name: string, website: string): Promise<string> {
+    await connectDB();
+    const brand = new Brand({
+      name,
+      website
+    });
 
-    return brand.id;
+    await brand.save();
+    return brand._id.toString();
   }
 }

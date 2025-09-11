@@ -1,13 +1,14 @@
-import {NextResponse} from 'next/server';
-import {Brands} from '@/db/models';
-import {eq} from 'drizzle-orm';
-import db from "@/db";
+import { NextResponse } from 'next/server';
+import { Brand } from '@/db/models';
+import connectDB from '@/db';
 
 export async function POST() {
   try {
+    await connectDB();
+    
     // Find KFC brand in database
-    const brands = await db.select().from(Brands).where(eq(Brands.name, 'KFC'));
-    if (brands.length === 0) {
+    const brand = await Brand.findOne({ name: 'KFC' });
+    if (!brand) {
       return NextResponse.json({ error: 'KFC brand not found in database' }, { status: 404 });
     }
 

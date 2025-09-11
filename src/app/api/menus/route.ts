@@ -1,33 +1,48 @@
 import { NextResponse } from 'next/server';
-import { Brands, Menus, MenuItems } from '@/db/models';
-import { eq, sql } from 'drizzle-orm';
-import db from "@/db";
+import { Brand, Menu } from '@/db/models';
+import connectDB from '@/db';
 
 export async function GET() {
   try {
-    const latestMenus = await db
-      .select({
-        menuId: Menus.id,
-        brandId: Brands.id,
-        brandName: Brands.name,
-        brandWebsite: Brands.website,
-        menuDate: Menus.date,
-        itemName: MenuItems.name,
-        price: MenuItems.price,
-        category: MenuItems.category,
-        description: MenuItems.description,
-        available: MenuItems.available
-      })
-      .from(Menus)
-      .innerJoin(Brands, eq(Menus.brand_id, Brands.id))
-      .leftJoin(MenuItems, eq(MenuItems.menu_id, Menus.id))
-      .where(
-        sql`${Menus.id} IN (
-          SELECT DISTINCT ON (brand_id) id 
-          FROM menus 
-          ORDER BY brand_id, date DESC
-        )`
-      );
+    await connectDB();
+    
+    const latestMenus = await Menu.aggregate([
+      {
+        $sort: { brandId: 1, date: -1 }
+      },
+      {
+        $group: {
+          _id: '$brandId',
+          latestMenu: { $first: '$$ROOT' }
+        }
+      },
+      {
+        $replaceRoot: { newRoot: '$latestMenu' }
+      },
+      {
+        $lookup: {
+          from: 'brands',
+          localField: 'brandId',
+          foreignField: '_id',
+          as: 'brand'
+        }
+      },
+      {
+        $unwind: '$brand'
+      },
+      {
+        $project: {
+          _id: 1,
+          brandId: 1,
+          date: 1,
+          items: 1,
+          createdAt: 1,
+          updatedAt: 1,
+          'brand.name': 1,
+          'brand.website': 1
+        }
+      }
+    ]);
     
     return NextResponse.json(latestMenus);
   } catch (error) {

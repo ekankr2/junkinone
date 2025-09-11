@@ -1,34 +1,39 @@
 import { NextResponse } from 'next/server';
-import { Menus, MenuItems } from '@/db/models';
-import { eq, notInArray, sql } from 'drizzle-orm';
-import db from '@/db';
+import { Menu } from '@/db/models';
+import connectDB from '@/db';
 
 export async function DELETE() {
   try {
-    // Get the latest menu ID for each brand
-    const latestMenuIds = await db
-      .select({
-        id: sql<number>`DISTINCT ON (brand_id) id`.as('id')
-      })
-      .from(Menus)
-      .orderBy(sql`brand_id, date DESC`);
+    await connectDB();
+    
+    // Get the latest menu ID for each brand using aggregation
+    const latestMenus = await Menu.aggregate([
+      {
+        $sort: { brandId: 1, date: -1 }
+      },
+      {
+        $group: {
+          _id: '$brandId',
+          latestMenuId: { $first: '$_id' }
+        }
+      }
+    ]);
 
-    const latestIds = latestMenuIds.map(menu => menu.id);
+    const latestMenuIds = latestMenus.map(menu => menu.latestMenuId);
 
-    if (latestIds.length === 0) {
+    if (latestMenuIds.length === 0) {
       return NextResponse.json({ message: 'No menus to clean up' });
     }
 
-    // Delete old menu records (menu items will be automatically deleted via cascade)
-    const deletedMenusResult = await db
-      .delete(Menus)
-      .where(notInArray(Menus.id, latestIds))
-      .returning({ id: Menus.id });
+    // Delete old menu records (items are embedded, so they'll be deleted with the menu)
+    const deleteResult = await Menu.deleteMany({
+      _id: { $nin: latestMenuIds }
+    });
 
     return NextResponse.json({
-      message: `Cleaned up ${deletedMenusResult.length} old menus (menu items automatically deleted via cascade)`,
-      deletedMenus: deletedMenusResult.length,
-      keptLatestMenus: latestIds
+      message: `Cleaned up ${deleteResult.deletedCount} old menus`,
+      deletedMenus: deleteResult.deletedCount,
+      keptLatestMenus: latestMenuIds.length
     });
   } catch (error) {
     console.error('Menu cleanup failed:', error);
