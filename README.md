@@ -1,36 +1,41 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🎓 Junkinone
 
-## Getting Started
+부트캠프 학생들이 만든 API를 수집하여 무료로 제공합니다.
 
-First, run the development server:
+> "버려지는 프로젝트를 실사용 포트폴리오로"
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🚀 빠른 시작
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+**학생이라면:** [프로젝트 등록하기](docs/for-students.md)  
+**개발자라면:** [API 사용하기](docs/for-developers.md)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📊 현재 상태
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- 🎯 **총 API**: 0개
+- 📈 **누적 호출**: 0회  
+- 👨‍🎓 **참여 학생**: 0명
 
-## Learn More
+## 📋 API 목록
 
-To learn more about Next.js, take a look at the following resources:
+[전체 API 보기](docs/api-list.md)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 💡 어떻게 작동하나요?
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+학생들이 부트캠프에서 만든 프로젝트 → Junkinone에 등록 → 실제 개발자들이 사용 → 학생은 실사용 통계 획득
 
-## Deploy on Vercel
+[자세히 보기](docs/how-it-works.md)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🤝 기여하기
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. 프로젝트 제보: [Issues](../../issues/new/choose)
+2. 문서 개선: Pull Request 환영
+3. 피드백: [Discussions](../../discussions)
+
+## 📧 문의
+
+- 이메일: contact@apinuri.com
+- 웹사이트: [apinuri.com](https://apinuri.com)
+
+---
+
+Made with ❤️ by [apinuri](https://github.com/apinuri)
