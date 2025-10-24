@@ -9,7 +9,7 @@
 ✅ **무료 배포** - 서버 비용 0원, 당신은 코드만  
 ✅ **실사용 통계** - "누적 사용 1,247회" 포트폴리오 작성  
 ✅ **GitHub 기여** - 원작자로 명시  
-✅ **취업 연결** - apinuri 통해 기업 노출
+✅ **취업 연결** - apinuri 통해 노출
 
 ## 📝 등록 방법 (정말 간단함)
 
@@ -49,9 +49,9 @@
 ### ✅ 환영하는 프로젝트
 
 **기술 스택:**
-- Spring Boot (가장 환영!)
-- Node.js (Express/Nest.js)
-- Python (Django/Flask/FastAPI)
+- Java (Spring Boot)
+- Node.js (Express/Fastify)
+- Python (FastAPI)
 
 **API 타입:**
 - REST API (GET, POST 등)
@@ -154,10 +154,10 @@ A. 네, Issues에 요청하면 즉시 삭제합니다.
 A. 기술적 이유로 어려울 수 있습니다. 피드백 드립니다.
 
 **Q. 코드 수정하고 싶으면?**  
-A. 본인 저장소 수정 후 알려주시면 재배포합니다.
+A. 본인 저장소 수정 후 알려주시면 재배포합니다. 또는 JunkInOne PR
 
 **Q. Spring Boot만 되나요?**  
-A. Node.js, Python도 가능하지만 Spring Boot가 가장 쉽습니다.
+A. Node.js, Python도 가능.
 
 ## 🚀 시작하기
 
