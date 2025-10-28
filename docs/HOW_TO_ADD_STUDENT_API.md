@@ -8,17 +8,21 @@ Create a new package under `com.example.junkinone`:
 
 ```
 src/main/kotlin/com/example/junkinone/
-  └── {domain-name}/
+  └── {simple-folder-name}/
       └── controller/
-          └── {DomainName}Controller.kt
+          └── {DescriptiveController}Controller.kt
 ```
 
-**Example**: For a "todo" API, create:
+**Example**: For a "todo list" API, create:
 ```
 src/main/kotlin/com/example/junkinone/todo/
   └── controller/
-      └── TodoController.kt
+      └── TodoListController.kt
 ```
+
+**Naming convention**:
+- Folder: simple, short name (cat, dog, todo, weather)
+- Controller: descriptive name (CatFactsController, DogBreedsController, TodoListController)
 
 ## Step 2: Write the Controller
 
@@ -28,13 +32,13 @@ package com.example.junkinone.todo.controller
 import org.springframework.web.bind.annotation.*
 
 /**
- * Todo API
+ * Todo List API
  * Submitted by: @student_username
  * GitHub: https://github.com/student/original-repo
  */
 @RestController
 @RequestMapping("/api/todo")
-class TodoController {
+class TodoListController {
 
     // Simple in-memory data (no database needed)
     private val todos = mutableListOf(
@@ -100,15 +104,17 @@ curl http://localhost:8080/api/todo
 4. **URL pattern**: Always use `/api/{domain-name}/*`
 5. **Add comments**: Include student's GitHub info in the controller
 
-## Example Domain Names
+## Example Structure
 
-- `/api/catfacts` - Cat Facts API
-- `/api/dogbreeds` - Dog Breeds API
-- `/api/quotes` - Random Quotes API
-- `/api/korean-cities` - Korean Cities API
-- `/api/todo` - Todo API
-- `/api/recipes` - Recipe API
-- `/api/jokes` - Jokes API
+| Folder | Controller | API URL |
+|--------|-----------|---------|
+| `cat/` | `CatFactsController.kt` | `/api/catfacts` |
+| `dog/` | `DogBreedsController.kt` | `/api/dogbreeds` |
+| `quotes/` | `RandomQuotesController.kt` | `/api/quotes` |
+| `cities/` | `KoreanCitiesController.kt` | `/api/korean-cities` |
+| `todo/` | `TodoListController.kt` | `/api/todo` |
+| `recipes/` | `RecipeController.kt` | `/api/recipes` |
+| `jokes/` | `JokesController.kt` | `/api/jokes` |
 
 ---
 
