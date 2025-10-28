@@ -1,5 +1,7 @@
 package com.example.junkinone.dog.controller
 
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.web.bind.annotation.*
 
 /**
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.*
  */
 @RestController
 @RequestMapping("/api/dogbreeds")
+@Tag(name = "Dog Breeds", description = "Dog breed information API (Student Project by @student_sarah)")
 class DogBreedsController {
 
     private val breeds = mapOf(

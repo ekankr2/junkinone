@@ -1,5 +1,7 @@
 package com.example.junkinone.quotes.controller
 
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.web.bind.annotation.*
 
 /**
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.*
  */
 @RestController
 @RequestMapping("/api/quotes")
+@Tag(name = "Quotes", description = "Motivational quotes API (Student Project by @student_mike)")
 class RandomQuotesController {
 
     private val quotes = listOf(
