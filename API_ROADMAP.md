@@ -31,34 +31,6 @@ dongs = listOf("역삼동", "논현동", ...)
 }
 ```
 
-### ⏳ 3. 한국 전화번호 생성기
-**엔드포인트**: `/api/korean-phone`
-**구현 방식**: 010 + 랜덤 4자리 + 랜덤 4자리
-```kotlin
-fun generatePhone() = "010-${Random.nextInt(1000, 9999)}-${Random.nextInt(1000, 9999)}"
-```
-**응답 예시**:
-```json
-{
-  "phone": "010-1234-5678",
-  "formatted": "01012345678"
-}
-```
-
-### ⏳ 4. 이메일 생성기
-**엔드포인트**: `/api/email-generator`
-**구현 방식**: 랜덤 이름 + 도메인 리스트
-```kotlin
-domains = listOf("gmail.com", "naver.com", "kakao.com", ...)
-```
-**응답 예시**:
-```json
-{
-  "email": "minsu.kim@gmail.com",
-  "username": "minsu.kim"
-}
-```
-
 ### ⏳ 5. 회사명 생성기
 **엔드포인트**: `/api/company-name`
 **구현 방식**: 형용사 + 명사 조합

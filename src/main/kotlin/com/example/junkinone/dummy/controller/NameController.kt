@@ -1,7 +1,6 @@
 package com.example.junkinone.dummy.controller
 
 import io.swagger.v3.oas.annotations.Operation
-import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.web.bind.annotation.*
 
 /**
@@ -9,9 +8,8 @@ import org.springframework.web.bind.annotation.*
  * Generates random Korean names for dummy data
  */
 @RestController
-@RequestMapping("/dummy/korean-names")
-@Tag(name = "더미 데이터", description = "테스트 및 개발용 랜덤 더미 데이터 생성")
-class NameController {
+@RequestMapping("/korean-names")
+class NameController : DummyController() {
 
     data class KoreanNameResponse(
         val name: String,
@@ -51,46 +49,62 @@ class NameController {
     )
 
     @GetMapping
-    @Operation(summary = "한국 이름 생성", description = "성별과 함께 한국 이름을 반환합니다")
-    fun getName(): KoreanNameResponse {
-        return KoreanNameResponse(
-            name = "${surnames.random()}${maleFirstNames.random()}",
-            gender = "male"
-        )
-    }
+    @Operation(
+        summary = "한국 이름 생성",
+        description = """
+            한국 이름을 생성합니다.
 
-    @GetMapping("/male")
-    @Operation(summary = "남성 이름 생성", description = "남성 한국 이름을 반환합니다")
-    fun getMaleName(): KoreanNameResponse {
-        return KoreanNameResponse(
-            name = "${surnames.random()}${maleFirstNames.random()}",
-            gender = "male"
-        )
-    }
-
-    @GetMapping("/female")
-    @Operation(summary = "여성 이름 생성", description = "여성 한국 이름을 반환합니다")
-    fun getFemaleName(): KoreanNameResponse {
-        return KoreanNameResponse(
-            name = "${surnames.random()}${femaleFirstNames.random()}",
-            gender = "female"
-        )
+            **gender 파라미터:**
+            - `random` (기본값): 랜덤 성별
+            - `male`: 남성 이름
+            - `female`: 여성 이름
+        """
+    )
+    fun getName(@RequestParam(defaultValue = "random") gender: String): KoreanNameResponse {
+        return generateName(gender)
     }
 
     @GetMapping("/bulk")
-    @Operation(summary = "이름 대량 생성", description = "여러 개의 한국 이름을 생성합니다 (최대 100개)")
-    fun getBulkNames(@RequestParam(defaultValue = "10") count: Int): BulkNamesResponse {
+    @Operation(
+        summary = "이름 대량 생성",
+        description = """
+            여러 개의 한국 이름을 생성합니다 (최대 100개).
+
+            **파라미터:**
+            - `count`: 생성할 이름 개수 (기본값: 10, 최대: 100)
+            - `gender`: 성별 (기본값: random, 옵션: male, female, random)
+        """
+    )
+    fun getBulkNames(
+        @RequestParam(defaultValue = "10") count: Int,
+        @RequestParam(defaultValue = "random") gender: String
+    ): BulkNamesResponse {
         val actualCount = minOf(count, 100)
         val names = (1..actualCount).map {
-            val isMale = (0..1).random() == 0
-            KoreanNameResponse(
-                name = "${surnames.random()}${if (isMale) maleFirstNames.random() else femaleFirstNames.random()}",
-                gender = if (isMale) "male" else "female"
-            )
+            generateName(gender)
         }
         return BulkNamesResponse(
             names = names,
             count = actualCount
+        )
+    }
+
+    private fun generateName(gender: String): KoreanNameResponse {
+        val actualGender = when (gender.lowercase()) {
+            "male" -> "male"
+            "female" -> "female"
+            else -> if ((0..1).random() == 0) "male" else "female"
+        }
+
+        val firstName = if (actualGender == "male") {
+            maleFirstNames.random()
+        } else {
+            femaleFirstNames.random()
+        }
+
+        return KoreanNameResponse(
+            name = "${surnames.random()}$firstName",
+            gender = actualGender
         )
     }
 }

@@ -38,11 +38,11 @@ class OpenApiConfig {
             .servers(
                 listOf(
                     Server()
-                        .url("https://api.junkinone.com")
-                        .description("Production"),
-                    Server()
                         .url("http://localhost:8080")
-                        .description("Local Development")
+                        .description("Local Development"),
+                    Server()
+                        .url("https://api.junkinone.com")
+                        .description("Production")
                 )
             )
     }
