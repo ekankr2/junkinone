@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*
  * GitHub: https://github.com/student_john/cat-facts
  */
 @RestController
-@RequestMapping("/api/catfacts")
+@RequestMapping("/catfacts")
 @Tag(name = "Cat Facts", description = "Random cat facts API (Student Project by @student_john)")
 class CatFactsController {
 
