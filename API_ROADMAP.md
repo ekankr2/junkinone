@@ -31,21 +31,6 @@ dongs = listOf("역삼동", "논현동", ...)
 }
 ```
 
-### ⏳ 5. 회사명 생성기
-**엔드포인트**: `/api/company-name`
-**구현 방식**: 형용사 + 명사 조합
-```kotlin
-adjectives = listOf("혁신적인", "창의적인", "글로벌", ...)
-nouns = listOf("테크", "솔루션", "시스템", ...)
-```
-**응답 예시**:
-```json
-{
-  "name": "혁신적인테크",
-  "nameEn": "Innovative Tech"
-}
-```
-
 ---
 
 ## 🔍 Phase 2: 검증/유틸리티 API
@@ -98,16 +83,6 @@ fun generatePassword(length: Int, includeSpecial: Boolean): String
 {
   "password": "aB3$xY9!mN2@",
   "strength": "strong"
-}
-```
-
-### ⏳ 9. UUID/ULID 생성기
-**엔드포인트**: `/api/uuid`, `/api/ulid`
-**구현 방식**: Java UUID 라이브러리 사용
-**응답**:
-```json
-{
-  "uuid": "550e8400-e29b-41d4-a716-446655440000"
 }
 ```
 
