@@ -18,31 +18,31 @@ class OpenApiConfig {
                     .title("Junkinone API")
                     .version("1.0.0")
                     .description("""
-                        ## 🎓 Free APIs from Bootcamp Students
+                        ## 🎓 토이 프로젝트 만들 때 필요한 API 모음
 
-                        부트캠프 학생들이 만든 API와 무료 공개 API를 수집하여 제공합니다.
+                        학생 개발자들이 토이 프로젝트를 만들 때 필요한 유용한 API들을 제공합니다.
 
-                        - 🎯 **Student Projects**: Real APIs built by bootcamp students
-                        - 🆓 **Free APIs**: Curated public APIs
-                        - 📊 **Usage Stats**: Track your API usage for portfolio
+                        - 🎲 **더미 데이터**: 한국 이름, 주소, 전화번호 등 테스트 데이터 생성
+                        - 🇰🇷 **한국 데이터**: 공휴일, 은행 코드, 대학교 목록 등
+                        - 🔧 **유틸리티**: 검증기, 변환기, 생성기 등
 
-                        All APIs are free to use. No authentication required.
+                        모든 API는 무료이며 인증이 필요 없습니다.
                     """.trimIndent())
                     .contact(
                         Contact()
                             .name("Junkinone")
                             .email("ekankr2@gmail.com")
-                            .url("https://apinuri.com")
+                            .url("https://junkinone.com")
                     )
             )
             .servers(
                 listOf(
                     Server()
-                        .url("http://localhost:8080")
-                        .description("Local Development"),
+                        .url("https://api.junkinone.com")
+                        .description("Production"),
                     Server()
-                        .url("https://junkinone.com")
-                        .description("Production")
+                        .url("http://localhost:8080")
+                        .description("Local Development")
                 )
             )
     }
