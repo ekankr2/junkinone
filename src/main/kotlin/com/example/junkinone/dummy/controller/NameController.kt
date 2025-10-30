@@ -50,27 +50,27 @@ class NameController {
         "수민", "주현", "지현", "수정", "예서", "보민", "가영", "은진", "다희", "채린"
     )
 
-    @GetMapping("/random")
-    @Operation(summary = "Get a random Korean name", description = "Returns a random Korean name with gender")
-    fun getRandomName(): KoreanNameResponse {
+    @GetMapping
+    @Operation(summary = "Get a Korean name", description = "Returns a Korean name with gender")
+    fun getName(): KoreanNameResponse {
         return KoreanNameResponse(
             name = "${surnames.random()}${maleFirstNames.random()}",
             gender = "male"
         )
     }
 
-    @GetMapping("/random/male")
-    @Operation(summary = "Get a random male Korean name", description = "Returns a random male Korean name")
-    fun getRandomMaleName(): KoreanNameResponse {
+    @GetMapping("/male")
+    @Operation(summary = "Get a male Korean name", description = "Returns a male Korean name")
+    fun getMaleName(): KoreanNameResponse {
         return KoreanNameResponse(
             name = "${surnames.random()}${maleFirstNames.random()}",
             gender = "male"
         )
     }
 
-    @GetMapping("/random/female")
-    @Operation(summary = "Get a random female Korean name", description = "Returns a random female Korean name")
-    fun getRandomFemaleName(): KoreanNameResponse {
+    @GetMapping("/female")
+    @Operation(summary = "Get a female Korean name", description = "Returns a female Korean name")
+    fun getFemaleName(): KoreanNameResponse {
         return KoreanNameResponse(
             name = "${surnames.random()}${femaleFirstNames.random()}",
             gender = "female"

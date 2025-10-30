@@ -16,14 +16,14 @@
 #### 사용 예시
 
 ```bash
-# 랜덤 이름 1개
-GET https://api.junkinone.com/dummy/korean-names/random
+# 이름 1개
+GET https://api.junkinone.com/dummy/korean-names
 
 # 남성 이름
-GET https://api.junkinone.com/dummy/korean-names/random/male
+GET https://api.junkinone.com/dummy/korean-names/male
 
 # 여성 이름
-GET https://api.junkinone.com/dummy/korean-names/random/female
+GET https://api.junkinone.com/dummy/korean-names/female
 
 # 대량 생성 (10개)
 GET https://api.junkinone.com/dummy/korean-names/bulk?count=10
