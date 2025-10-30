@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*
  */
 @RestController
 @RequestMapping("/dummy/korean-names")
-@Tag(name = "Dummy", description = "Generate random dummy data for testing and development")
+@Tag(name = "더미 데이터", description = "테스트 및 개발용 랜덤 더미 데이터 생성")
 class NameController {
 
     data class KoreanNameResponse(
@@ -51,7 +51,7 @@ class NameController {
     )
 
     @GetMapping
-    @Operation(summary = "Get a Korean name", description = "Returns a Korean name with gender")
+    @Operation(summary = "한국 이름 생성", description = "성별과 함께 한국 이름을 반환합니다")
     fun getName(): KoreanNameResponse {
         return KoreanNameResponse(
             name = "${surnames.random()}${maleFirstNames.random()}",
@@ -60,7 +60,7 @@ class NameController {
     }
 
     @GetMapping("/male")
-    @Operation(summary = "Get a male Korean name", description = "Returns a male Korean name")
+    @Operation(summary = "남성 이름 생성", description = "남성 한국 이름을 반환합니다")
     fun getMaleName(): KoreanNameResponse {
         return KoreanNameResponse(
             name = "${surnames.random()}${maleFirstNames.random()}",
@@ -69,7 +69,7 @@ class NameController {
     }
 
     @GetMapping("/female")
-    @Operation(summary = "Get a female Korean name", description = "Returns a female Korean name")
+    @Operation(summary = "여성 이름 생성", description = "여성 한국 이름을 반환합니다")
     fun getFemaleName(): KoreanNameResponse {
         return KoreanNameResponse(
             name = "${surnames.random()}${femaleFirstNames.random()}",
@@ -78,7 +78,7 @@ class NameController {
     }
 
     @GetMapping("/bulk")
-    @Operation(summary = "Get multiple random Korean names", description = "Returns multiple random Korean names")
+    @Operation(summary = "이름 대량 생성", description = "여러 개의 한국 이름을 생성합니다 (최대 100개)")
     fun getBulkNames(@RequestParam(defaultValue = "10") count: Int): BulkNamesResponse {
         val actualCount = minOf(count, 100)
         val names = (1..actualCount).map {
