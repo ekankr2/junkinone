@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.*
  * Generates random Korean names for dummy data
  */
 @RestController
-@RequestMapping("/korean-names")
-@Tag(name = "Korean Names", description = "Random Korean name generator API")
+@RequestMapping("/dummy/korean-names")
+@Tag(name = "Dummy", description = "Generate random dummy data for testing and development")
 class NameController {
 
     data class KoreanNameResponse(
