@@ -14,76 +14,35 @@
 
 **Junkinone은 이런 API들을 무료로 제공합니다.**
 
-## 📊 현재 제공 중인 API
+## 🚀 빠른 시작
 
-- 🐱 Cat Facts API - 고양이 관련 재미있는 사실
-- 🐶 Dog Breeds API - 개 품종 정보
-- 💬 Random Quotes API - 랜덤 명언
-- 🏙️ Korean Cities API - 한국 도시 정보
+**API 문서**: [api.junkinone.com](https://api.junkinone.com)
 
-**더 많은 API 준비 중...**
-
-## 🚀 사용 방법
-
-모든 API는 [apinuri.com](https://apinuri.com)에서 확인하고 사용하세요.
-
-- API 목록 및 문서
-- 사용 예시 코드
-- Swagger UI로 바로 테스트
-
-## 🤝 기여하기 (Contribute)
-
-새로운 API 아이디어가 있거나 직접 추가하고 싶으신가요?
-
-### API 제안하기
-[Issues](../../issues/new)에서 이런 API 있으면 좋겠다고 제안해주세요!
-
-### 직접 API 추가하기
-
-1. **Fork & Clone**
 ```bash
-git fork https://github.com/ekaylab/junkinone
-git clone https://github.com/YOUR_USERNAME/junkinone
+# 랜덤 한국 이름 생성
+curl https://api.junkinone.com/dummy/korean-names/random
 ```
 
-2. **새 API 만들기**
-```
-src/main/kotlin/com/example/junkinone/
-  └── {domain}/
-      └── controller/
-          └── {YourApi}Controller.kt
-```
+## 📋 [현재 제공 중인 API](API_LIST.md)
 
-3. **패턴 따라하기**
-기존 컨트롤러 (`cat`, `dog`, `quotes` 등) 보고 똑같이 만들면 됩니다.
+### 더미 데이터
+- 👤 한국 이름 생성기
 
-4. **Pull Request**
-PR 보내주시면 리뷰 후 머지하겠습니다!
+**[전체 API 목록 보기 →](API_LIST.md)**
 
-### 어떤 API가 좋을까요?
+## 🤝 기여하기
 
-✅ **환영하는 API**
-- 학생들 토이 프로젝트에 유용한 것
-- 한국어/한국 특화 데이터
-- 공공데이터포털 가공
-- 재미있고 실용적인 유틸리티
-
-❌ **적합하지 않은 API**
-- 단순 CRUD만 있는 것
-- 너무 복잡한 비즈니스 로직
-- 개인정보 포함
-
-## 🤝 참여하기
+새로운 API를 제안하거나 직접 추가하고 싶으신가요?
 
 - **API 제안**: [Issues](../../issues/new)
 - **코드 기여**: Pull Request 환영
-- **피드백**: [Discussions](../../discussions)
+- **개발 가이드**: [API_ROADMAP.md](API_ROADMAP.md)
 
 ## 📧 문의
 
-- 이메일: ekankr2@gmail.com
-- 웹사이트: [apinuri.com](https://apinuri.com)
+- GitHub: [@ekaylab](https://github.com/ekaylab)
+- 웹사이트: [junkinone.com](https://junkinone.com)
 
 ---
 
-Made with ❤️ by [apinuri](https://github.com/ekaylab/apinuri)
+Made with ❤️ for Korean students
