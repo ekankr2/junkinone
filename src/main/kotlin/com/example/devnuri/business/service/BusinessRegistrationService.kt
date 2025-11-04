@@ -18,29 +18,8 @@ class BusinessRegistrationService {
 
     // ==================== NTS API DTOs (Internal) ====================
 
-    private data class NtsBusinessInfo(
-        val b_no: String,
-        val start_dt: String,
-        val p_nm: String,
-        val p_nm2: String? = null,
-        val b_nm: String? = null,
-        val corp_no: String? = null,
-        val b_sector: String? = null,
-        val b_type: String? = null,
-        val b_adr: String? = null
-    )
-
     private data class NtsStatusRequest(
         val b_no: List<String>
-    )
-
-    @Suppress("PropertyName")
-    private data class NtsValidationResult(
-        val b_no: String,
-        val valid: String,
-        val valid_msg: String? = null,
-        val request_param: NtsBusinessInfo,
-        val status: NtsBusinessStatusInfo? = null
     )
 
     @Suppress("PropertyName")
