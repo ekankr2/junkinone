@@ -6,9 +6,10 @@
 
 랜덤 한국 이름을 생성합니다.
 
-- **엔드포인트**: `/dummy/korean-names`
-- **파라미터**: `gender` (random, male, female)
-- **대량 생성**: `/dummy/korean-names/bulk?count=10`
+```
+GET /dummy/korean-names?gender=random
+GET /dummy/korean-names/bulk?count=10
+```
 
 ---
 
@@ -16,9 +17,10 @@
 
 한국 회사명을 생성합니다. 한글명과 매칭되는 영문명도 함께 제공됩니다.
 
-- **엔드포인트**: `/dummy/company-names`
-- **파라미터**: `includeType` (true/false - 회사 형태 포함 여부)
-- **대량 생성**: `/dummy/company-names/bulk?count=10`
+```
+GET /dummy/company-names?includeType=true
+GET /dummy/company-names/bulk?count=10
+```
 
 ---
 
@@ -26,22 +28,35 @@
 
 형용사 + 명사 형식의 한국어 닉네임을 생성합니다.
 
-- **엔드포인트**: `/dummy/nicknames`
-- **대량 생성**: `/dummy/nicknames/bulk?count=10`
+```
+GET /dummy/nicknames
+GET /dummy/nicknames/bulk?count=10
+```
 
 ---
-## 🚧 준비 중인 API
 
-다음 API들이 곧 추가될 예정입니다:
+## 공공 데이터
 
-- 한국 주소 생성기
-- 주민등록번호 검증기
-- 사업자등록번호 검증기
-- 한국 공휴일 조회
-- 한국 은행 코드
-- 로또 번호 생성기
+### 📍 주소 검색
 
-전체 개발 계획은 [API_ROADMAP.md](API_ROADMAP.md)에서 확인하세요.
+도로명주소 및 지번주소를 검색합니다.
+
+```
+GET /address/search?keyword=세종로&currentPage=1&countPerPage=10
+```
+
+---
+
+### 🏪 사업자등록 상태조회
+
+사업자등록번호로 납세자 상태, 과세유형 등을 조회합니다.
+
+```
+POST /business/status
+{
+  "businessNumbers": ["1234567890", "0987654321"]
+}
+```
 
 ---
 
