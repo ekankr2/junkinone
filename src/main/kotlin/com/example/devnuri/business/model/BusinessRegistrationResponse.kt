@@ -1,25 +1,5 @@
 package com.example.devnuri.business.model
 
-/**
- * 사업자등록정보 진위확인 응답
- */
-data class ValidationResponse(
-    val statusCode: String,
-    val requestCount: Int,
-    val validCount: Int,
-    val data: List<ValidationResult>
-)
-
-/**
- * 진위확인 결과
- */
-data class ValidationResult(
-    val businessNumber: String,
-    val valid: String,                    // 01: Valid, 02: Invalid
-    val validMessage: String? = null,     // 02인 경우: "확인할 수 없습니다"
-    val requestParam: BusinessInfo,       // Echo back the original request
-    val status: BusinessStatusInfo? = null
-)
 
 /**
  * 사업자등록 상태조회 응답
