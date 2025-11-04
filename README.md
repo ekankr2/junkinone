@@ -1,14 +1,14 @@
-# 🎓 Junkinone
+# 🎓 Devnuri
 
 **토이 프로젝트 만들 때 필요한 API 모음**
 
 ## 🚀 빠른 시작
 
-**API 문서**: [api.junkinone.com](https://api.junkinone.com)
+**API 문서**: [dev.apinuri.com](https://dev.apinuri.com)
 
 ```bash
 # 한국 이름 생성
-curl https://api.junkinone.com/dummy/korean-names
+curl https://dev.apinuri.com/dummy/korean-names
 ```
 
 ## 📋 [현재 제공 중인 API 목록 보기 →](API_LIST.md)

@@ -1,24 +1,10 @@
-package com.example.junkinone.dummy.controller
+package com.example.devnuri.dummy.generator
 
-import io.swagger.v3.oas.annotations.Operation
-import org.springframework.web.bind.annotation.*
-
-/**
- * Korean Name Generator API
- * Generates random Korean names for dummy data
- */
-@RestController
-@RequestMapping("/korean-names")
-class NameController : DummyController() {
+object KoreanNameGenerator {
 
     data class KoreanNameResponse(
         val name: String,
         val gender: String
-    )
-
-    data class BulkNamesResponse(
-        val names: List<KoreanNameResponse>,
-        val count: Int
     )
 
     private val surnames = listOf(
@@ -48,48 +34,7 @@ class NameController : DummyController() {
         "수민", "주현", "지현", "수정", "예서", "보민", "가영", "은진", "다희", "채린"
     )
 
-    @GetMapping
-    @Operation(
-        summary = "한국 이름 생성",
-        description = """
-            한국 이름을 생성합니다.
-
-            **gender 파라미터:**
-            - `random` (기본값): 랜덤 성별
-            - `male`: 남성 이름
-            - `female`: 여성 이름
-        """
-    )
-    fun getName(@RequestParam(defaultValue = "random") gender: String): KoreanNameResponse {
-        return generateName(gender)
-    }
-
-    @GetMapping("/bulk")
-    @Operation(
-        summary = "이름 대량 생성",
-        description = """
-            여러 개의 한국 이름을 생성합니다 (최대 100개).
-
-            **파라미터:**
-            - `count`: 생성할 이름 개수 (기본값: 10, 최대: 100)
-            - `gender`: 성별 (기본값: random, 옵션: male, female, random)
-        """
-    )
-    fun getBulkNames(
-        @RequestParam(defaultValue = "10") count: Int,
-        @RequestParam(defaultValue = "random") gender: String
-    ): BulkNamesResponse {
-        val actualCount = minOf(count, 100)
-        val names = (1..actualCount).map {
-            generateName(gender)
-        }
-        return BulkNamesResponse(
-            names = names,
-            count = actualCount
-        )
-    }
-
-    private fun generateName(gender: String): KoreanNameResponse {
+    fun generate(gender: String = "random"): KoreanNameResponse {
         val actualGender = when (gender.lowercase()) {
             "male" -> "male"
             "female" -> "female"
@@ -106,5 +51,10 @@ class NameController : DummyController() {
             name = "${surnames.random()}$firstName",
             gender = actualGender
         )
+    }
+
+    fun generateBulk(count: Int, gender: String = "random"): List<KoreanNameResponse> {
+        val actualCount = minOf(count, 100)
+        return (1..actualCount).map { generate(gender) }
     }
 }

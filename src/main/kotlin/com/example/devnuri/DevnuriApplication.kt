@@ -1,11 +1,11 @@
-package com.example.junkinone
+package com.example.devnuri
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class JunkinoneApplication
+class DevnuriApplication
 
 fun main(args: Array<String>) {
-    runApplication<JunkinoneApplication>(*args)
+    runApplication<DevnuriApplication>(*args)
 }

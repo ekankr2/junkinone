@@ -1,24 +1,10 @@
-package com.example.junkinone.dummy.controller
+package com.example.devnuri.dummy.generator
 
-import io.swagger.v3.oas.annotations.Operation
-import org.springframework.web.bind.annotation.*
-
-/**
- * Korean Company Name Generator API
- * Generates realistic Korean company names for dummy data
- */
-@RestController
-@RequestMapping("/company-names")
-class CompanyNameController : DummyController() {
+object CompanyNameGenerator {
 
     data class CompanyNameResponse(
         val name: String,
         val english: String
-    )
-
-    data class BulkCompanyNamesResponse(
-        val companies: List<CompanyNameResponse>,
-        val count: Int
     )
 
     // 회사명 앞부분 (한글 - 영문 매칭)
@@ -132,69 +118,7 @@ class CompanyNameController : DummyController() {
         "Tech", "Soft", "Media", "Labs", "Group"
     )
 
-    @GetMapping
-    @Operation(
-        summary = "회사명 생성",
-        description = """
-            한국 회사명을 생성합니다.
-
-            **includeType 파라미터:**
-            - `false` (기본값): 일반 회사명 (예: 한국소프트)
-            - `true`: 회사 형태 포함 (예: (주)한국소프트, (유)글로벌테크)
-        """
-    )
-    fun getCompanyName(@RequestParam(defaultValue = "false") includeType: Boolean): CompanyNameResponse {
-        val company = generateCompanyName()
-
-        return if (includeType) {
-            val shortType = companyTypesShort.random()
-            val name = if (shortType.isEmpty()) company.name else "$shortType${company.name}"
-            CompanyNameResponse(
-                name = name,
-                english = company.english
-            )
-        } else {
-            company
-        }
-    }
-
-    @GetMapping("/bulk")
-    @Operation(
-        summary = "회사명 대량 생성",
-        description = """
-            여러 개의 회사명을 생성합니다 (최대 100개).
-
-            **파라미터:**
-            - `count`: 생성할 회사명 개수 (기본값: 10, 최대: 100)
-            - `includeType`: 회사 형태 포함 여부 (기본값: false)
-        """
-    )
-    fun getBulkCompanyNames(
-        @RequestParam(defaultValue = "10") count: Int,
-        @RequestParam(defaultValue = "false") includeType: Boolean
-    ): BulkCompanyNamesResponse {
-        val actualCount = minOf(count, 100)
-        val companies = (1..actualCount).map {
-            val company = generateCompanyName()
-
-            if (includeType) {
-                val shortType = companyTypesShort.random()
-                val name = if (shortType.isEmpty()) company.name else "$shortType${company.name}"
-                CompanyNameResponse(
-                    name = name,
-                    english = company.english
-                )
-            } else {
-                company
-            }
-        }
-        return BulkCompanyNamesResponse(
-            companies = companies,
-            count = actualCount
-        )
-    }
-
-    private fun generateCompanyName(): CompanyNameResponse {
+    fun generate(includeType: Boolean = false): CompanyNameResponse {
         // 한글 prefix와 middle 선택
         val koreanPrefix = prefixMap.keys.random()
         val koreanMiddle = middleMap.keys.random()
@@ -205,9 +129,17 @@ class CompanyNameController : DummyController() {
         val englishMiddle = middleMap[koreanMiddle]!!
         val english = "$englishPrefix $englishMiddle ${englishSuffixes.random()}"
 
-        return CompanyNameResponse(
-            name = koreanName,
-            english = english
-        )
+        return if (includeType) {
+            val shortType = companyTypesShort.random()
+            val name = if (shortType.isEmpty()) koreanName else "$shortType$koreanName"
+            CompanyNameResponse(name, english)
+        } else {
+            CompanyNameResponse(koreanName, english)
+        }
+    }
+
+    fun generateBulk(count: Int, includeType: Boolean = false): List<CompanyNameResponse> {
+        val actualCount = minOf(count, 100)
+        return (1..actualCount).map { generate(includeType) }
     }
 }

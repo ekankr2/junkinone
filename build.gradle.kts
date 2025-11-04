@@ -7,7 +7,7 @@ plugins {
 
 group = "com.example"
 version = "0.0.1-SNAPSHOT"
-description = "junkinone"
+description = "devnuri"
 
 java {
     toolchain {

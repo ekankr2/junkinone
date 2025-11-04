@@ -1,10 +1,10 @@
-package com.example.junkinone
+package com.example.devnuri
 
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
 
 @SpringBootTest
-class JunkinoneApplicationTests {
+class DevnuriApplicationTests {
 
     @Test
     fun contextLoads() {

@@ -1,4 +1,4 @@
-package com.example.junkinone.dummy.controller
+package com.example.devnuri.dummy.controller
 
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.web.bind.annotation.RequestMapping

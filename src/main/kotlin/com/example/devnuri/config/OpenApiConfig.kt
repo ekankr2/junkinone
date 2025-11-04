@@ -1,4 +1,4 @@
-package com.example.junkinone.config
+package com.example.devnuri.config
 
 import io.swagger.v3.oas.models.OpenAPI
 import io.swagger.v3.oas.models.info.Contact
@@ -15,7 +15,7 @@ class OpenApiConfig {
         return OpenAPI()
             .info(
                 Info()
-                    .title("Junkinone API")
+                    .title("Devnuri API")
                     .version("1.0.0")
                     .description("""
                         ## 🎓 토이 프로젝트 만들 때 필요한 API 모음
@@ -30,9 +30,9 @@ class OpenApiConfig {
                     """.trimIndent())
                     .contact(
                         Contact()
-                            .name("Junkinone")
+                            .name("Devnuri")
                             .email("ekankr2@gmail.com")
-                            .url("https://junkinone.com")
+                            .url("https://dev.apinuri.com")
                     )
             )
             .servers(
@@ -41,7 +41,7 @@ class OpenApiConfig {
                         .url("http://localhost:8080")
                         .description("Local Development"),
                     Server()
-                        .url("https://api.junkinone.com")
+                        .url("https://dev.apinuri.com")
                         .description("Production")
                 )
             )

@@ -1,6 +1,6 @@
 # 🗺️ API 개발 로드맵
 
-Junkinone에 추가할 API 목록입니다. 위에서부터 차례대로 구현하세요!
+Devnuri에 추가할 API 목록입니다. 위에서부터 차례대로 구현하세요!
 
 ---
 
@@ -298,7 +298,7 @@ POST /api/color/convert
 
 ### 컨트롤러 파일 위치
 ```
-src/main/kotlin/com/example/junkinone/
+src/main/kotlin/com/example/devnuri/
   ├── names/controller/KoreanNameController.kt
   ├── address/controller/KoreanAddressController.kt
   ├── phone/controller/PhoneNumberController.kt

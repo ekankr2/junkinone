@@ -1,23 +1,9 @@
-package com.example.junkinone.dummy.controller
+package com.example.devnuri.dummy.generator
 
-import io.swagger.v3.oas.annotations.Operation
-import org.springframework.web.bind.annotation.*
-
-/**
- * Korean Nickname Generator API
- * Generates random Korean nicknames in "adjective + noun" format
- */
-@RestController
-@RequestMapping("/nicknames")
-class NicknameController : DummyController() {
+object NicknameGenerator {
 
     data class NicknameResponse(
         val nickname: String
-    )
-
-    data class BulkNicknamesResponse(
-        val nicknames: List<NicknameResponse>,
-        val count: Int
     )
 
     // 형용사
@@ -124,41 +110,16 @@ class NicknameController : DummyController() {
         "요요", "팽이", "구슬", "딱지", "종이접기", "비눗방울", "풍선", "연", "프리스비", "부메랑"
     )
 
-    @GetMapping
-    @Operation(
-        summary = "닉네임 생성",
-        description = "형용사 + 명사 형식의 한국어 닉네임을 생성합니다."
-    )
-    fun getNickname(): NicknameResponse {
-        return generateNickname()
-    }
-
-    @GetMapping("/bulk")
-    @Operation(
-        summary = "닉네임 대량 생성",
-        description = """
-            여러 개의 닉네임을 생성합니다 (최대 100개).
-
-            **파라미터:**
-            - `count`: 생성할 닉네임 개수 (기본값: 10, 최대: 100)
-        """
-    )
-    fun getBulkNicknames(@RequestParam(defaultValue = "10") count: Int): BulkNicknamesResponse {
-        val actualCount = minOf(count, 100)
-        val nicknames = (1..actualCount).map {
-            generateNickname()
-        }
-        return BulkNicknamesResponse(
-            nicknames = nicknames,
-            count = actualCount
-        )
-    }
-
-    private fun generateNickname(): NicknameResponse {
+    fun generate(): NicknameResponse {
         val adjective = adjectives.random()
         val noun = nouns.random()
         return NicknameResponse(
             nickname = "$adjective $noun"
         )
+    }
+
+    fun generateBulk(count: Int): List<NicknameResponse> {
+        val actualCount = minOf(count, 100)
+        return (1..actualCount).map { generate() }
     }
 }
