@@ -19,18 +19,15 @@ class AddressSearchService {
 
     // ==================== Juso API DTOs (Internal) ====================
 
-    @Suppress("PropertyName")
     private data class JusoApiResponse(
         val results: JusoResultsInfo
     )
 
-    @Suppress("PropertyName")
     private data class JusoResultsInfo(
         val common: JusoCommonInfo,
         val juso: List<JusoAddressInfo>?
     )
 
-    @Suppress("PropertyName")
     private data class JusoCommonInfo(
         val errorCode: String,
         val errorMessage: String,
@@ -39,7 +36,6 @@ class AddressSearchService {
         val countPerPage: String
     )
 
-    @Suppress("PropertyName")
     private data class JusoAddressInfo(
         val roadAddr: String,
         val engAddr: String? = null,
@@ -128,7 +124,7 @@ class AddressSearchService {
 
     private fun buildUrl(request: AddressSearchRequest): String {
         return UriComponentsBuilder
-            .fromHttpUrl(baseUrl)
+            .fromUriString(baseUrl)
             .queryParam("confmKey", confmKey)
             .queryParam("currentPage", request.currentPage)
             .queryParam("countPerPage", request.countPerPage)

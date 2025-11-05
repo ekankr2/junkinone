@@ -90,7 +90,7 @@ class BusinessRegistrationService {
 
     private fun buildUrl(path: String): String {
         return UriComponentsBuilder
-            .fromHttpUrl(baseUrl + path)
+            .fromUriString(baseUrl + path)
             .queryParam("serviceKey", serviceKey)
             .queryParam("returnType", "JSON")
             .toUriString()
